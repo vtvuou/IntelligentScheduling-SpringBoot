@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <meta charset="UTF-8">
+   <title>title</title>
+   <script src=""></script>
+   <style>
+       
+   </style>
+</head> 
+<body>
+    <label>姓名：</label>
+	<input type="text" name="name" placeholder="请输入姓名">
+	<br>
+	<span>年龄：</span>
+	<input type="text" name="age" placeholder="请输入年龄">
+	<button onclick="add1()">添加</button><br>
+	<span>姓名：</span>
+	<input type="text" name="username" placeholder="请输入需要查询的姓名">
+	<button>查询</button><br>
+	<br>
+	<table>
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>姓名</th>
+				<th>年龄</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+
+   <script>
+    var id = 1;
+function add1() {
+	// 获取填写的数据
+	var inputLables = document.getElementsByTagName("input");
+	var name = inputLables[0].value;
+	var age = inputLables[1].value;
+	// 简单数据校验	
+	if (name=="" || age=="") {
+		alert("请正确输入");
+		return;
+	}
+	// 字符串拼接
+	var str1 = "" +
+		"<tr>" +
+			"<td>" + (++id) + "</td>" +
+			"<td>" + name + "</td>" +
+			"<td>" + age + "</td>" +
+			"<td>" +
+			"<a href='javascript:;'>删除</a>" +
+			" <a href='javascript:;'>修改</a>" +
+			"</td>" +
+		"</tr>";
+	var obj = document.getElementsByTagName("tbody")[0];
+	obj.innerHTML += str1;
+}
+
+   </script>
+ </body>
+</html>

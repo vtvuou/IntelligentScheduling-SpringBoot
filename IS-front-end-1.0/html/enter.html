@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登&nbsp;&nbsp;录</title>
+    <link rel="stylesheet" href="../css/enter.css">
+    <script src="../lib/jquery-3.5.1.js"></script>
+</head>
+
+<body>
+    <div class="div">
+        <div class="head-div">智能排班系统</div>
+        <div class="sign-div">
+            <form class="f">
+                <h1>登&nbsp;&nbsp;录</h1>
+                <input class="input-text" type="text" name="username" id="number" placeholder="帐号" onfocus="myfuntion()">
+                <input class="input-text" type="password" name="password" id="password" placeholder="密码" onfocus="myfuntion()">
+                <div class="point-out" id="pot">
+                    <span class="show" id="psh">*账号或密码错误，登录失败</span> 
+                    <span class="show" id="psh2">*账号或密码不能为空</span> 
+                </div>
+                <div class="sel">
+                  <label for="rem" class="lab">
+                        <input type="checkbox" name="1" id="rem" value="2"/>记住密码
+                  </label>
+                  <a href="#">忘记密码?</a>
+                </div>
+                <input class="enter-btn" type="button" value="登录" id="enter" >
+                <input class="reg-btn" type="button" value="注册" id="reg">
+                
+            </form>
+        </div>
+    </div>
+    <script>
+        var Num = document.getElementById("number")
+        var pw = document.getElementById("password")
+        var Enter = document.getElementById("enter")
+        var Reg = document.getElementById("reg")
+        Enter.onclick = function() {
+            // Num.value, pw.value
+            if(Num.value!=="" && pw.value!=="") {
+                $.get(`http://localhost:8080/study/enterServlet/${"0"}/${Num.value}/${pw.value}`,
+                
+                    function(resp) {
+                        if(resp==="true") {
+                            window.location.href="./week.html"
+                        }
+                        else {
+                            document.getElementById("psh").classList.remove("show")
+                        }
+                    }
+                )
+                
+            }
+            else {
+                document.getElementById("psh2").classList.remove("show")
+            }
+        }
+        Reg.onclick = function() {
+            window.location.href="./register.html"
+        }
+       function myfuntion() {
+        document.getElementById("psh").classList.add("show")
+        document.getElementById("psh2").classList.add("show")
+       }
+    </script>
+</body>
+
+</html>
+

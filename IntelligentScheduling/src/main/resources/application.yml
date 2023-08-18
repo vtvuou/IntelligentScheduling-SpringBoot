@@ -1,0 +1,20 @@
+
+spring:
+  application:
+    name: IS
+
+  datasource:
+    druid:
+      username: root
+      password: Hjq5708l#
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/com?useSSL=false&useUnicode=true&characterEncoding=UTF-8&&serverTimezone=UTC
+
+  thymeleaf:
+    enabled: false
+
+mybatis:
+  mapper-locations: classpath:mapper/**/*Mapper.xml
+  configuration:
+    call-setters-on-nulls: false
+    map-underscore-to-camel-case: true

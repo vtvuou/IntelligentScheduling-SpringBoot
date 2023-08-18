@@ -1,0 +1,103 @@
+body {
+    margin: 0;
+    padding: 0;
+    /* background: url(324932.jpg); */
+}
+
+.div {
+    width: 500px;
+    height: 600px;
+    /* 实现整个框居中效果 */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+}
+
+.sign-div {
+    width: 450px;
+    height: 343.333px;
+    text-align: center;
+    outline: none;
+    border: 1px solid rgb(94, 92, 233);
+    border-radius: 8px;
+    background-color: rgba(172, 235, 243, .2);
+    box-sizing: border-box;
+}
+
+.sign-div h1 {
+    margin-bottom: 10px;
+    color: rgb(29, 26, 26);
+}
+
+input {
+    width: 250px;
+    height: 44px;
+    border: none;
+  
+    outline: none;
+    
+    box-sizing: border-box;
+    display: block;
+    padding: 0 16px; 
+ } 
+
+.input-text {
+    margin: 5px auto;
+    border-radius: 16px;
+}
+
+.input-text:hover {
+    border: 0.5px solid rgb(76, 76, 233);
+    transition: 0.5s;
+    border-radius: 4px;
+}
+
+.enter-btn, .reg-btn {
+    font-size: 18px;
+    margin: 10px auto 10px;
+    border-radius: 44px;
+    cursor: pointer;
+    background-color: rgba(84, 175, 249, 0.8);
+}
+.reg-btn {
+ background-color: #ddd;
+}
+.sel {
+ width: 100%;
+ /* position: relative; */
+ margin-top: 8px;
+ /* background-color: yellow; */
+}
+.sel::after {
+content: '';
+display: block;
+clear: both;
+}
+.lab {
+ float: left;
+ /* position: absloute; */
+ margin-left: 100px;
+ margin-bottom: 15px;
+}
+#rem {
+ /* text-decoration: none; */
+ height: 16px;
+ width: 16px;
+ padding: 0;
+ margin-top: 4px;
+ box-sizing: 0;
+ display: inline-block;
+}
+.lab {
+ font-size: 18px;
+ margin-right: 22px;
+}
+.input-btn:hover {
+    color: #fff;
+    font-size: 16;
+    border-radius: 4px;
+    transition: 0.5s;
+    background-color: rgba(10, 138, 243, 0.8);
+}

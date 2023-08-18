@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+   <title>日排班表</title>
+   <link rel="stylesheet" href="../css/day.css">
+   <script src="../js/fixed.js"></script>
+   <script src="../js/method.js"></script>
+   <script src="../lib/jquery-3.5.1.js"></script>
+   <script src="../js/day.js"></script>
+   <script src="../js/selTime.js"></script>
+</head> 
+<body>
+    <div class="top">
+        <div class="container">
+            <div class="c">智能排班系统</div>
+            <select class="headsel" id="hds">
+            </select>
+            <div class="personInformation" id="perInfor">
+                <div class="person">
+                    <span class="personId" id="perId">personId</span>&nbsp;
+                    <span class="personName" id="perName">personName</span>
+                </div> &nbsp;     
+            <div class="photo" id="pht"></div>     
+        </div>
+        </div>
+        
+    </div>
+    <div class="header">
+        <div class="container">
+            <div class="con">
+                <div class="ym" id="ymd"></div>
+                <div class="seldw">
+                    <a href="./day.html" class="day">按日查看</a>
+                    <a href="./week.html" class="week">按周查看</a>
+                </div>
+            </div>
+            <div class="showNewTime">
+                <div class="res">当前排班表日期</div>
+                <div class="NewTime"></div>
+            </div>
+        </div>
+    </div>
+    <div class="operator">
+        <div class="container">
+            <div class="selgroup">
+                <select name="a" id="dg" class="group">
+                    <option value="0" class="mr">默认分组</option>
+                    <option value="1" class="check-gorup">按员工分组</option>
+                    <option value="2" class="post">按职位分组</option>
+                </select>
+            </div>
+            <form action="#" class="searchArr">
+                <input type="text" class="seaEmp" id="seaemp" placeholder="输入id搜索">
+                <button class="seaBtn" id = "seabtn"></button>
+            </form>
+            <div class="buttonWeek">
+                <select class="selWeek" id="selweek">
+                    <option value="1">第一周</option>
+                    <option value="2">第二周</option>
+                    <option value="3">第三周</option>
+                    <option value="4">第四周</option>
+                </select>
+                <select class="selDay" id="selday">
+                    <option value="1">周一</option>
+                    <option value="2">周二</option>
+                    <option value="3">周三</option>
+                    <option value="4">周四</option>
+                    <option value="5">周五</option>
+                    <option value="6">周六</option>
+                    <option value="7">周日</option>
+                </select>
+                <button class="but but1" id="btn1">排班</button>
+                <button class="but but2" id="btn2">编辑排班表</button>
+            </div>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="container">
+            <div class="information" id="inform">
+                <div class="emp-infor">
+                    <a href="./emp-table.html" target="_blank">查看员工信息</a> 
+                </div>
+                <div class="emp-perfer">
+                    <a href="./emp-perfer-table.html" target="_blank">查看员工偏好</a> 
+                </div>
+            </div>
+            <div class="show-area">
+                <table class="show-place">
+                    <thead>
+                        <tr>
+                            <th>员工ID</th>
+                            <th id="ename">员工姓名</th>
+                            <th >职位</th>
+                            <th >任务</th>
+                            <th id="stime">开始时间</th>
+                            <th>结束时间</th>
+                        </tr>
+                    </thead>
+                    <tbody id="box" class="main-place">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        var day = 1
+        var res = 0
+        const len = 1000
+        var btn = document.getElementById("btn1")
+        var tb = document.getElementById("box")
+        var sdg = document.getElementById("dg")
+        var dE = document.getElementById("dayEmp")
+        var trNodes = document.querySelectorAll("table > tbody > tr")
+        var cells = document.querySelectorAll("table > tbody > tr > td:first-child")   // tr的第一个td节点
+        var week = 1
+        var inp = document.getElementById("seaemp")
+        var NTime = document.getElementsByClassName("NewTime")[0]
+        
+        var trIndex = []
+        var saveId = []
+        for(let i = 0 ; i < len; i ++) {
+            saveId.push("null")
+        }
+       
+        document.getElementById("selweek").onclick = function() {
+            week = parseInt($("#selweek").val())
+            showNewTime(week - 1, day - 1, NTime)            
+        }
+        document.getElementById("selday").onchange = function() {
+            day = parseInt($("#selday").val())
+            showNewTime(week - 1, day - 1, NTime)
+        }
+
+        sdg.onchange = function() {    // 改变分组编号
+            res = parseInt($(".group").val())
+            if(res === 2) {
+                inp.placeholder = "输入职位搜索"
+            }
+            else if(res === 1){
+                inp.placeholder = "输入id搜索"
+            } else if(res === 0) {
+                inp.placeholder = ""
+            }
+        }
+
+        btn.onclick = function() {  // 排班按钮
+            $("#box").empty()
+            trIndex = []
+            dayInit(tb, week, day, trIndex)
+        }
+
+        document.getElementById("seabtn").onclick =  function() {    // 搜索功能按钮
+            if(res === 0)
+                return 
+            $("#box").empty()
+            trIndex = []
+            search(tb, $(".seaEmp").val(), res, week, day, trIndex)
+        }
+        $(".seaEmp").keydown(function (event) {
+            if (event.keyCode == 13) {          //keyCode=13是回车键
+                $("#box").empty()
+                trIndex = []
+                search(tb, $(".seaEmp").val(), res, week, day, trIndex)
+            }
+        });
+
+
+        var changeflag = true
+        var chBtn2 = document.getElementById("btn2")
+        chBtn2.onclick = function () {  // 编辑排班表
+            if(changeflag) {
+                $.get(
+                    `http://localhost:8080/study/enterServlet/${"1"}/${"a"}/${"a"}`,
+                    function(response) {
+                        changeTable(response)
+                    }
+                )
+               
+            }            
+            else {
+                changeflag = true
+                chBtn2.innerHTML = "编辑排班表"
+            }
+        }
+
+        function changeTable(data) {
+            if(data.job != "门店经理") {
+                alert("你没有权限！")
+                return 
+            }
+            changeflag = false
+            chBtn2.innerHTML = "确定"
+            var trNodes = document.querySelectorAll("table > tbody > tr")
+            var cells = document.querySelectorAll("table > tbody > tr > td:first-child")   // tr的第一个td节点
+            for(let i = 0 ; i < cells.length + 1; i ++) {
+                saveId[i] = "null"
+            }
+            for (var i = 0; i < cells.length; i++) {
+                cells[i].dataset.index = i
+                cells[i].onclick = getTb
+            }
+            function getTb() {
+                if(changeflag)
+                    return 
+                
+                let k = parseInt(this.dataset.index)
+                // 获取原来的单元格内容
+                let id = trNodes[k].children[0].innerHTML
+                let name = trNodes[k].children[1].innerHTML
+                let job = trNodes[k].children[2].innerHTML
+                let task = trNodes[k].children[3].innerHTML
+                let startTime = getTime(trNodes[k].children[4].innerHTML)
+                let endTime = getTime(trNodes[k].children[5].innerHTML)
+                if(task === "自由班次")
+                    task = "值班"
+                if(saveId[k] === "null")
+                    saveId[k] = id
+                // 创建一个表单元素
+                var input = document.createElement("input");
+                input.type = "text";
+
+                input.value = "";
+                // 把表单元素添加到单元格中
+                this.innerHTML = "";
+                this.appendChild(input);
+                input.focus();
+                // 失去焦点时检查修改修改
+                input.onblur = function() {
+                    let val = this.value
+                    console.log(trIndex[k])
+                    if(val === "") {
+                        trNodes[k].children[0].innerHTML = saveId[k]
+                        return 
+                    }
+                    else if(val === "del") {
+                        $.get(
+                            `http://localhost:8080/study/changeArrangeServlet/${trIndex[k]}/${"+"}/${"+"}/${"+"}/${"自由班次"}`,
+                        )
+                        saveId[k] = "+"
+                        trNodes[k].children[0].innerHTML = "+"
+                        trNodes[k].children[1].innerHTML = "+"
+                        trNodes[k].children[2].innerHTML = "+"
+                        trNodes[k].children[3].innerHTML = "自由班次"
+                        return 
+                    }
+                    $.get(
+                        `http://localhost:8080/study/enterServlet/${"1"}/${"a"}/${"a"}`,
+                        function(response) {
+                            let data = JSON.parse(response)
+                            searchEmp(data)
+                        }
+                    )
+                    function searchEmp(data) {
+                        $.get(
+                            `http://localhost:8080/study/searchEmpServlet/${data.ID}/${val}`,
+                            function(resp) {
+                                let need = JSON.parse(resp)
+                                if(need.data === undefined) {
+                                    trNodes[k].children[0].innerHTML = saveId[k]
+                                    alert("该员工不存在！")
+                                }
+                                else {
+                                    $.get(
+                                        `http://localhost:8080/study/changeArrangeServlet/${trIndex[k]}/${val}/${need.data.empName}/${need.data.job}/${task}`,
+                                    
+                                    )
+                                    saveId[k] = val
+                                    trNodes[k].children[0].innerHTML = saveId[k]
+                                    trNodes[k].children[1].innerHTML = need.data.empName 
+                                    trNodes[k].children[2].innerHTML = need.data.job
+                                    trNodes[k].children[3].innerHTML = task
+                                }
+                            }
+                        )
+                    }
+                }
+            }
+        }
+        function getTime(str) {
+            let reg = /\d+/g
+            let tm = parseInt(str.match(reg)[0]) * 60 + parseInt(str.match(reg)[1])
+            return tm
+        }
+     </script>
+     <script>
+        initDate("pass", "pass", 0)
+        showNewTime(week - 1, day - 1, NTime)
+        Fixed(document.getElementById("inform"))
+        cla(document.getElementById("ymd"))
+        init(document.getElementById("perId"),document.getElementById("perName"),document.getElementById("hds"))
+     </script>
+     
+ </body>
+</html>

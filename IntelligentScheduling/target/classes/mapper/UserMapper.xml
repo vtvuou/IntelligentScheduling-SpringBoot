@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace 名称空间 -->
+
+<!-- 需要注意的是如果数据库表的字段名称和实体类的属性名称不一样，则不能自动封装数据 -->
+<!-- 解决方法1:可以是给查询的字段起别名（缺点每次查询都要写一遍），解决方法可以是增加 sql片段（但是不灵活） -->
+<!-- 解决方法2：resultMap -->
+<mapper namespace="com.keep.mapper.UserMapper">
+    <insert id="insertTbUser">
+    <if test="list != null">
+        insert into tb_user
+            <foreach item="item" collection="list">
+                values(#{item.id},#{item.username},#{item.password},#{item.gender},#{item.addr})
+            </foreach>
+    </if>
+    </insert>
+
+    <insert id="insertArrange">
+        insert into arrange(id, name, job, task, empShopID, startTime, endTime, week , day) values
+            <foreach item="List" collection="list" separator=",">
+                <foreach item="item" collection="List" separator=",">
+                    <foreach item="arr" collection="item" separator=",">
+                        (#{arr.id},#{arr.name},#{arr.job}, #{arr.task}, #{arr.empShopID},#{arr.startTime},#{arr.endTime}, #{arr.week}, #{arr.day})
+                    </foreach>
+                </foreach>
+            </foreach>
+    </insert>
+
+    <update id="updateArranged">
+        update shop set arranged=#{flag} where id=#{id}
+    </update>
+
+    <update id="updateArrange">
+        update arrange set id = #{id}, name = #{name}, job = #{job}, task = #{task} where ine = #{index}
+    </update>
+
+
+    <delete id="deleteArrange">
+        delete from arrange
+    </delete>
+
+    <select id="selectOne" resultType="com.keep.entity.employee">
+        select * from employee where
+            ID = #{number} and
+            pw = #{pw}
+    </select>
+
+    <select id="selectArrange" resultType="com.keep.entity.arrange">
+        select * from arrange
+        where week=${w} and day=${d} and empShopID=${id}
+
+    </select>
+
+    <select id="selectShop" resultType="com.keep.entity.Shop">
+        select * from Shop where
+        ID = (select empShopID from employee where ID=${id})
+    </select>
+
+    <select id="selectEmp" resultType="com.keep.entity.employee">
+        select * from employee
+            <where>
+                <if test="val1 != null and val1 != '' ">
+                    ID = #{val1}
+                </if>
+                <if test="val2 != null and val2 != '%%' ">
+                    and empName like #{val2}
+                </if>
+                <if test="val3 != null and val3 != '' ">
+                    and job like #{val3}
+                </if>
+                <if test="id != null and id != '' ">
+                    and empShopID = #{id}
+                </if>
+            </where>
+    </select>
+
+    <select id="selectEmpShop" resultType="com.keep.entity.employee">
+        select * from employee
+            where empShopID = ${id}
+    </select>
+
+    <select id="selectSF" resultType="com.keep.entity.shopFlow">
+        select * from shopFlow
+            where id = ${id} and week = ${w} and day = ${d} order by startTime
+    </select>
+
+
+    <select id="selectShopId" resultType="java.lang.String">
+        select ID from Shop where
+            ID = (select empShopID from employee where ID=${id})
+    </select>
+
+    <select id="selectEmployeeData" resultType="com.keep.entity.employee">
+        select * from employee
+        where empShopID=${id}
+    </select>
+
+    <select id="selectRule" resultType="com.keep.entity.Rule">
+        select * from Rule
+            where id=${id}
+    </select>
+    <select id="selectEmpPre" resultType="com.keep.entity.empPre">
+        select * from emppre
+            where shopId = ${id}
+    </select>
+    <select id="judgeArranged" resultType="java.lang.String">
+        select arranged from shop where id = ${id}
+    </select>
+
+    <select id="selectDayArrange" resultType="com.keep.entity.arrange">
+        select * from arrange
+            where empShopID = ${id} and week = ${w} and day = ${d}
+    </select>
+
+    <select id="selectArrangeById" resultType="com.keep.entity.arrange">
+        select * from arrange
+                where id=${id} and empShopID=${shopId} and week=${w} and day = ${d}
+    </select>
+
+    <select id="selectArrangeByJob" resultType="com.keep.entity.arrange">
+        select * from arrange
+            where empShopID=${shopId} and job like #{job} and week=${w} and day = ${d}
+    </select>
+
+    <select id="selectOneEmp" resultType="com.keep.entity.employee">
+        select * from employee where id = ${id} and empShopID = #{enterId}
+    </select>
+
+    <select id="selectEPre" resultType="com.keep.entity.empPre">
+        select * from emppre
+        <where>
+                shopId = #{shopId}
+            <if test="val1 != null and val1 != '' ">
+                and empId = #{val1}
+            </if>
+        </where>
+    </select>
+
+</mapper>

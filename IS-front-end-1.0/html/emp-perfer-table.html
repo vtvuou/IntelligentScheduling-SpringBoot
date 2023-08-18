@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <meta charset="UTF-8">
+   <title>查询员工偏好</title>
+   <script src="../lib/jquery-3.5.1.js"></script>
+   <script src="../js/emp-per-table.js"></script>
+   <style>
+       body {
+        background-color:rgba(135, 206, 235,0.4);
+       }
+       .top {
+        height: 60px;
+        margin-top: 50px; 
+        overflow: hidden;
+       }
+       .top > .container {
+        width: 1190px;
+        height: 100%;
+        margin: auto;
+        background-color:#fff;
+       }
+       .container > .id , .container > .name {
+        margin-left: 15px;
+        margin-top:15px;
+        display: inline-block;
+       }
+       .container > .id >input, .container > .name >input {
+        height: 20px;
+        font-size: 18px;
+       }
+       .container >.but {
+        display: inline-block;
+        margin-left: 50px;
+        margin-top: 15px;
+
+       }
+       .container >.but > .btn1 {
+        font-size: 17px;
+        cursor: pointer;
+       }
+       .main {
+        margin-top: 15px;
+        overflow: hidden;
+       }
+       .main > .container {
+        width: 1190px;
+        margin: auto;
+       }
+       .show-area {
+        width: 100%;
+        background-color: #fff;
+       }
+       .main-show {
+            width: 100%; 
+            border-collapse: collapse;
+        }
+       table,th,td {
+        border: 2px solid black;
+        }
+        th {
+            font-size: 20px;
+        }
+        td {
+            font-size: 18px;
+            text-align: center;
+        }
+   </style>
+</head> 
+<body>
+
+  <div class="top">
+    <div class="container">
+        <div class="id">
+                员工ID 
+            <input type="text" id="empId">
+        </div>
+        
+        <div class="but">
+            <button class="btn1" id="btn">搜索</button>
+        </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="container">
+        <div class="show-area">
+            <table class="main-show">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>工作日偏好</th>
+                        <th>工作时间偏好</th>
+                        <th>班次时长偏好</th>
+                        <th>所属门店</th>
+                    </tr>
+                </thead>
+                <tbody id="box">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+  </div>
+  <script>
+    var eI = document.getElementById("empId")
+    var btn2 = document.getElementById("btn")
+    btn2.onclick = function() {
+        $("#box").empty()
+        empPerInit(eI.value, document.getElementById("box"))
+    }
+  </script>
+ </body>
+</html>

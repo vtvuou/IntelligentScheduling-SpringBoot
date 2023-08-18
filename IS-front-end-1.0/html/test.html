@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="../lib/jquery-3.5.1.js"></script>
+</head>
+
+<body>
+    <div class="div">
+        
+    </div>
+    <script>
+        var div = document.getElementsByClassName("div")[0];
+        $.get(
+            `http://localhost:8080/get/data/${"8001"}`,
+            function(response) {
+               console.log(response)
+            }
+    )
+    
+    </script>
+</body>
+
+</html>
+
+

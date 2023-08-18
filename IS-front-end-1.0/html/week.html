@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+   <title>周排班表</title>
+   <link rel="stylesheet" href="../css/week.css">
+   <script src="../js/fixed.js"></script>
+   <script src="../js/selTime.js"></script>
+   <script src="../js/method.js"></script>
+   <script src="../lib/jquery-3.5.1.js"></script>
+   <script src="../js/week.js"></script>
+</head> 
+<body>
+    <div class="top">
+        <div class="container">
+            <div class="c">智能排班系统</div>
+            <select class="headsel" id="hds">
+            </select>
+            <div class="personInformation" id="perInfor">
+                <div class="person">
+                    <span class="personId" id="perId">personId</span>&nbsp;
+                    <span class="personName" id="perName">personName</span>
+                </div> &nbsp;     
+            <div class="photo" id="pht"></div>     
+        </div>
+        </div>
+    </div>
+    <div class="header">
+        <div class="container">
+            <div class="con">
+                <div class="ym" id="ymd"></div>
+                <div class="seldw">
+                    <span class="day" id="tzday">按日查看</span>
+                    <a href="./week.html" class="week">按周查看</a>
+                </div>
+            </div>
+            <div class="seltime" id="selT">
+                <div class="Week activeWT" value="1">
+                    <div class="week1" value="1">第一周</div>
+                    <div class="time1" value="1"></div>
+                </div>
+                <div class="Week" value="2">
+                    <div class="week2" value="2">第二周</div>
+                    <div class="time1" value="2"></div>
+                </div>
+                <div class="Week" value="3">
+                    <div class="week3" value="3">第三周</div>
+                    <div class="time1" value="3"></div>
+                </div>
+                <div class="Week" value="4">
+                    <div class="week4" value="4">第四周</div>
+                    <div class="time1" value="4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="operator">
+        <div class="container">
+            <div class="selgroup">
+                <select name="a" id="dg" class="group">
+                    <option value="0" class="mr">默认分组</option>
+                    <option value="1" class="check-group">按员工分组</option>
+                    <option value="2" class="post">按职位分组</option>
+                    </select>
+                </div>
+                <form action="#" class="searchArr">
+                    <input type="text" class="seaEmp" id="seaemp" placeholder="">
+                    <button class="seaBtn" id="seabtn"></button>
+                </form>
+            <div class="button">
+                <button class="but but1" id="btn1">排班</button>
+                
+            </div>
+         </div>
+    </div>
+    <div class="main-content">
+        <div class="container">
+            <div class="information" id="inform">
+                <div class="emp-infor">
+                    <a href="./emp-table.html" target="_blank">查看员工信息</a> 
+                </div>
+                <div class="emp-perfer">
+                    <a href="./emp-perfer-table.html" target="_blank">查看员工偏好</a> 
+                </div>
+            </div>
+            <div class="show-area">
+                <table class="show-place">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="Ww">周一</div>
+                                <div class="Dd">4月10日</div>
+                            </th>
+                            <th><div class="Ww">周二</div>
+                                <div class="Dd">4月10日</div></th>
+                            <th><div class="Ww">周三</div>
+                                <div class="Dd">4月10日</div></th>
+                            <th><div class="Ww">周四</div>
+                                <div class="Dd">4月10日</div></th>
+                            <th><div class="Ww">周五</div>
+                                <div class="Dd">4月10日</div></th>
+                            <th><div class="Ww">周六</div>
+                                <div class="Dd">4月10日</div></th>
+                            <th><div class="Ww">周日</div>
+                                <div class="Dd">4月10日</div></th>
+                        </tr>
+                    </thead>
+                    <tbody id="box">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        var  week = 1
+        var res = 0
+        var btn = document.getElementById("btn1")
+        var sdg = document.getElementById("dg")
+        var tb = document.getElementById("box") 
+        var selt = document.getElementById("selT")
+        var cal = document.getElementsByClassName("week1")
+        var arrWeek = document.querySelectorAll(".seltime > .Week")
+
+        var inp = document.getElementById("seaemp")
+
+        var divTimes = document.getElementsByClassName("time1")
+        var thDds = document.getElementsByClassName("Dd")
+
+        btn.onclick = function() {
+            $("#box").empty()
+            it(tb, week)
+        }
+
+        document.getElementById("tzday").onclick = function() {
+            window.open(encodeURI('./day.html?'+'data='+ week))
+        }
+
+        sdg.onclick = function() {
+            res = parseInt($(".group").val())
+            if(res === 2) {
+                inp.placeholder = "输入职位搜索"
+            }
+            else if(res === 1){
+                inp.placeholder = "输入id搜索"
+            }else if(res === 0) {
+                inp.placeholder = ""
+            }
+        }
+
+
+        selt.onclick = function(evt) {    // 选择第几周
+            $("#box").empty()
+            for(let i=0;i<arrWeek.length;i++) {
+                arrWeek[i].classList.remove("activeWT")
+            }
+            var cla = evt.target.className
+            var c = document.getElementsByClassName(cla)[0]
+            week = parseInt(c.getAttribute("value"))
+            for(let i = 1 ; i <= arrWeek.length ; i++) {
+                if(week == i) {
+                    var index = i - 1
+                    arrWeek[index].classList.add("activeWT")
+                    break
+                }
+            }
+            dateSelect(thDds, week - 1)
+        }
+
+        document.getElementById("seabtn").onclick = function() {   // 搜索功能按钮
+            if(res === 0)
+                return 
+            $("#box").empty()
+            searchWeek(tb, $(".seaEmp").val(), res, week)
+        }
+        $("#seaemp").keydown(function (event) {
+            if (event.keyCode == 13) {          //keyCode=13是回车键
+                 $("#box").empty()
+                searchWeek(tb, $(".seaEmp").val(), res, week)
+            }
+        });
+
+     </script>
+     <script>
+        Fixed(document.getElementById("inform"))
+        
+        cla(document.getElementById("ymd"))
+        init(document.getElementById("perId"),
+            document.getElementById("perName"),
+            document.getElementById("hds"))
+        initDate(divTimes, thDds, 0)
+
+     </script>
+ </body>
+</html>

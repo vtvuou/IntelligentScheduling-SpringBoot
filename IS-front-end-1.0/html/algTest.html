@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <meta charset="UTF-8">
+   <title>title</title>
+   <script src="../js/selTime.js"></script>
+   <style>
+  table,th,td {
+    border: 2px solid black;
+    border-collapse: collapse;
+    
+   }
+   th,td {
+    width: 100px;
+   }
+   tr > td > input {
+    width: 100px;
+   }
+   .c {
+    display: inline-block;
+   }
+   </style>
+</head> 
+<body>
+
+
+    <table>
+      <thead>
+    <tr>
+      <th>姓名</th>
+      <th>年龄</th>
+      <th>性别</th>
+    </tr></thead>
+    <tbody>
+    <tr>
+      <td>张三</td>
+      <td>25</td>
+      <td>男</td>
+    </tr>
+    <tr>
+      <td>李四</td>
+      <td>32</td>
+      <td>女</td>
+    </tr>
+    <tr>
+      <td>王五</td>
+      <td>32</td>
+      <td>女</td>
+    </tr></tbody>
+    </table>
+    <select class="selDay" id="selday">
+      <option value="1">
+        <div class="c">
+        周一
+      </div>
+      <div class="c">
+        2月1日
+      </div>
+    </option>
+      <option value="2">周二</option>
+      <option value="3">周三</option>
+      <option value="4">周四</option>
+      <option value="5">周五</option>
+      <option value="6">周六</option>
+      <option value="7">周日</option>
+  </select>
+ </body>
+ <script>
+  var flag = true
+  // 获取表格元素
+var table = document.getElementsByTagName("table")[0];
+var ttr = document.querySelectorAll("table  tbody tr")
+// 获取所有单元格元素
+var cells = document.querySelectorAll("tr > td:first-child")
+
+// 为所有单元格添加点击事件
+for (var i = 0; i < cells.length; i++) {
+  cells[i].dataset.index = i
+  cells[i].onclick = getTb
+}
+function getTb() {
+    // 获取原来的单元格内容
+    var content = this.innerHTML;
+    
+    let k = parseInt(this.dataset.index)
+    console.log(k)
+    console.log(ttr[k].children[0].innerHTML, ttr[k].children[1].innerHTML)
+    // 创建一个表单元素
+    var input = document.createElement("input");
+    input.type = "text";
+    input.value = content;
+    // 把表单元素添加到单元格中
+    this.innerHTML = "";
+    this.appendChild(input);
+    input.focus();
+    // 失去焦点时保存修改
+    input.onblur = function() {
+      this.parentNode.innerHTML = this.value;
+      console.log(getTime(this.value))
+    }
+  } 
+  function getTime(str) {
+    console.log(str)
+      let reg = /\d+/g
+      console.log(str.match(reg))
+      let tm = parseInt(str.match(reg)[0]) * 60 + parseInt(str.match(reg)[1])
+      console.log(tm)
+      return tm
+  }
+  var arr = []
+    temp(arr)
+    console.log(1)
+    console.log(arr)
+ </script>
+ 
+</html>

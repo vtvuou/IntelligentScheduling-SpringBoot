@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <meta charset="UTF-8">
+   <title>查询员工信息</title>
+   <link rel="stylesheet" href="../css/emp-table.css">
+   <script src="../js/emp-table.js"></script>
+   <script src="../lib/jquery-3.5.1.js"></script>
+</head> 
+<body>
+
+  <div class="top">
+    <div class="container">
+        <div class="id">
+                员工ID 
+            <input type="text" id="empId">
+        </div>
+        <div class="name">
+            员工姓名
+            <input type="text" id="empName">
+        </div>
+        <div class="job">
+            职位
+            <input type="text" id="Job">
+        </div>
+        <div class="but">
+            <button class="btn1" id="btn">搜索</button>
+        </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="container">
+        <div class="show-area">
+            <table class="main-show">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>名字</th>
+                        <th>邮件</th>
+                        <th>职位</th>
+                        <th>所属门店</th>
+                    </tr>
+                </thead>
+                <tbody id="box">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+  </div>
+  <script>
+    var eI = document.getElementById("empId")
+    var eN = document.getElementById("empName")
+    var Jb = document.getElementById("Job")
+    var btn2 = document.getElementById("btn")
+    btn2.onclick = function() {
+        $("#box").empty()
+        empInit(eI.value, eN.value,Jb.value, document.getElementById("box"))
+    }
+  </script>
+ </body>
+</html>

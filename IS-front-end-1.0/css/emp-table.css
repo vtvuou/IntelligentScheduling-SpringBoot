@@ -1,0 +1,63 @@
+body {
+    background-color:rgba(135, 206, 235,0.4);
+   }
+   .top {
+    height: 60px;
+    margin-top: 50px; 
+    overflow: hidden;
+   }
+   .top > .container {
+    width: 1190px;
+    height: 100%;
+    margin: auto;
+    background-color:#fff;
+   }
+   .container > .id , .container > .name , .container > .job {
+    margin-left: 15px;
+    margin-top:15px;
+    font-size: 17px;
+    display: inline-block;
+   }
+   .container > .id >input, .container > .name >input , .container > .job > input {
+    height: 24px;
+    font-size: 18px;
+   }
+   .container >.but {
+    display: inline-block;
+    margin-left: 50px;
+    margin-top: 15px;
+
+   }
+   .container >.but > .btn1 {
+    font-size: 17px;
+    cursor: pointer;
+   }
+   .container >.but > .btn1:hover {
+    background-color:white;
+   }
+   .main {
+    margin-top: 15px;
+    overflow: hidden;
+   }
+   .main > .container {
+    width: 1190px;
+    margin: auto;
+   }
+   .show-area {
+    width: 100%;
+    background-color: #fff;
+   }
+   .main-show {
+        width: 100%; 
+        border-collapse: collapse;
+    }
+   table,th,td {
+    border: 2px solid black;
+    }
+    th {
+        font-size: 20px;
+    }
+    td {
+        font-size: 18px;
+        text-align: center;
+    }
